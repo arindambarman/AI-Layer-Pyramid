@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 1: The Silicon Bedrock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-yellow': '#facc15',
+                        'neon-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow-yellow { box-shadow: 0 0 20px -5px rgba(250, 204, 21, 0.3); }
+        .text-glow { text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
+        
+        /* Visual 1: Matrix Math */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+        .matrix-cell {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 4px;
+            aspect-ratio: 1;
+            animation: pulse-cell 2s infinite alternate;
+        }
+        .matrix-cell:nth-child(odd) { animation-delay: 0.5s; background: rgba(250, 204, 21, 0.3); }
+        .matrix-cell:nth-child(3n) { animation-delay: 1s; }
+        @keyframes pulse-cell {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.05); opacity: 1; border-color: #facc15; }
+        }
+
+        /* Visual 2: Sparsity */
+        .sparsity-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+        .node {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #334155;
+            transition: all 0.3s;
+        }
+        .node.active {
+            background: #facc15;
+            box-shadow: 0 0 10px #facc15;
+            animation: blink 1.5s infinite;
+        }
+        .node.active:nth-child(even) { animation-delay: 0.7s; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Visual 3: Interconnects */
+        .data-stream {
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .stream-line {
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #facc15, transparent);
+            background-size: 200% 100%;
+            animation: stream 1s linear infinite;
+        }
+        .stream-line:nth-child(1) { top: 20%; animation-duration: 0.8s; }
+        .stream-line:nth-child(2) { top: 50%; animation-duration: 1.2s; animation-direction: reverse; }
+        .stream-line:nth-child(3) { top: 80%; animation-duration: 0.9s; }
+        @keyframes stream {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Visual 4: SRAM Pooling */
+        .isometric-stack {
+            transform: rotateX(60deg) rotateZ(-45deg);
+            transform-style: preserve-3d;
+        }
+        .sram-layer {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #facc15;
+            background: rgba(250, 204, 21, 0.1);
+            border-radius: 8px;
+            animation: float-layer 3s ease-in-out infinite alternate;
+        }
+        .sram-layer:nth-child(1) { transform: translateZ(0px); }
+        .sram-layer:nth-child(2) { transform: translateZ(30px); animation-delay: -1s; }
+        .sram-layer:nth-child(3) { transform: translateZ(60px); animation-delay: -2s; background: rgba(250, 204, 21, 0.3); box-shadow: 0 0 20px rgba(250, 204, 21, 0.4); }
+        @keyframes float-layer {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; border-color: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen selection:bg-neon-yellow/30 pb-20">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8">
+        <a href="index.html" class="inline-flex items-center text-sm font-mono text-slate-400 hover:text-neon-yellow transition-colors">
+            &larr; BACK TO PYRAMID
+        </a>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="inline-block border border-neon-yellow/30 bg-neon-yellow/10 px-3 py-1 rounded-full text-neon-yellow text-xs font-mono font-bold mb-4">
+            LAYER 01 ARCHITECTURE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-800 text-white mb-6">
+            Inside the <span class="text-neon-yellow text-glow">Silicon Bedrock</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl text-lg leading-relaxed">
+            The fundamental physics of AI rely on hyper-specialized microarchitectures. We are no longer building generalized CPUs; we are forging massive, parallelized engines designed strictly for the mathematics of intelligence.
+        </p>
+    </header>
+
+    <!-- Feature Grid -->
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Feature 1: Matrix Math -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-yellow/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="flex items-center gap-4">
+                    <div class="matrix-grid w-20 h-20">
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                    </div>
+                    <div class="text-neon-yellow font-mono text-xl">×</div>
+                    <div class="matrix-grid w-20 h-20">
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                        <div class="matrix-cell"></div><div class="matrix-cell"></div><div class="matrix-cell"></div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Native Matrix Multiplication</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Neural networks are essentially massive series of matrix multiplications. Modern AI accelerators (like Tensor Cores) execute these operations directly in hardware using lower precision formats like FP8 and INT4, quadrupling throughput compared to legacy FP32 architectures without losing reasoning fidelity.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-yellow px-2 py-1 rounded">Metrics: 20,000+ TFLOPs per chip</span>
+        </article>
+
+        <!-- Feature 2: Sparsity -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-yellow/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="sparsity-grid">
+                    <div class="node active"></div><div class="node"></div><div class="node active"></div><div class="node"></div><div class="node active"></div><div class="node active"></div>
+                    <div class="node"></div><div class="node active"></div><div class="node"></div><div class="node active"></div><div class="node"></div><div class="node"></div>
+                    <div class="node active"></div><div class="node"></div><div class="node active"></div><div class="node active"></div><div class="node"></div><div class="node active"></div>
+                    <div class="node"></div><div class="node active"></div><div class="node"></div><div class="node"></div><div class="node active"></div><div class="node"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Hardware-Level Sparsity</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                In many neural networks, lots of weights fall to zero. Computing them is a waste of energy. Modern silicon structurally ignores these zero-values (2:4 structured sparsity), essentially doubling compute performance and halving memory bandwidth usage on the fly.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-yellow px-2 py-1 rounded">Efficiency: +100% Throughput</span>
+        </article>
+
+        <!-- Feature 3: Interconnects -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-yellow/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative gap-6 px-10">
+                <div class="w-16 h-24 bg-slate-800 border-2 border-slate-700 rounded-lg flex items-center justify-center z-10"><span class="text-[10px] font-mono text-slate-400">GPU 1</span></div>
+                <div class="flex-1 h-12 data-stream rounded">
+                    <div class="stream-line"></div>
+                    <div class="stream-line"></div>
+                    <div class="stream-line"></div>
+                </div>
+                <div class="w-16 h-24 bg-slate-800 border-2 border-slate-700 rounded-lg flex items-center justify-center z-10"><span class="text-[10px] font-mono text-slate-400">GPU 2</span></div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Petabyte/s Scale Interconnects</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                A single chip cannot hold a trillion-parameter model. Models must be split across tens of thousands of GPUs. Technologies like NVLink and Infinity Fabric provide massive die-to-die bandwidth, allowing multiple distinct chips to act as one giant unified processor.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-yellow px-2 py-1 rounded">Bandwidth: 1.8 TB/s Bi-directional</span>
+        </article>
+
+        <!-- Feature 4: SRAM Pooling -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-yellow/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="isometric-stack relative w-32 h-32 mt-12">
+                    <div class="sram-layer"></div>
+                    <div class="sram-layer"></div>
+                    <div class="sram-layer flex items-center justify-center">
+                        <span class="text-neon-yellow font-mono text-xs transform -rotate-45 block drop-shadow-lg font-bold">HBM3e</span>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Synchronous Memory Pooling</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                The "Memory Wall" is the biggest bottleneck in AI. High Bandwidth Memory (HBM) is stacked vertically directly next to the compute die using advanced packaging (CoWoS). This shortens the physical distance data travels, drastically reducing latency and power consumption.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-yellow px-2 py-1 rounded">Capacity: up to 192GB per chip</span>
+        </article>
+
+    </main>
+</body>
+</html>

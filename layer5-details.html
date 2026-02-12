@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 5: Application Frontier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-emerald': '#10b981',
+                        'neon-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow-emerald { box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.4); }
+        .text-glow { text-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
+        
+        /* Visual 1: Agentic Autonomy */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 160px;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #64748b;
+        }
+        .task-checkbox {
+            width: 12px; height: 12px;
+            border: 1px solid #64748b;
+            border-radius: 3px;
+            position: relative;
+        }
+        .task-checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #10b981;
+            font-size: 10px;
+            opacity: 0;
+        }
+        
+        /* Sequential completion animation */
+        .ti-1 { animation: complete-task 6s infinite 0s; }
+        .ti-2 { animation: complete-task 6s infinite 1.5s; }
+        .ti-3 { animation: complete-task 6s infinite 3s; }
+        
+        @keyframes complete-task {
+            0%, 10% { border-color: #334155; color: #64748b; box-shadow: none; }
+            15%, 80% { border-color: #10b981; color: #fff; box-shadow: 0 0 10px rgba(16,185,129,0.2); background: rgba(16,185,129,0.1); }
+            85%, 100% { border-color: #334155; color: #64748b; box-shadow: none; }
+        }
+        .ti-1 .task-checkbox { animation: check-mark 6s infinite 0s; }
+        .ti-2 .task-checkbox { animation: check-mark 6s infinite 1.5s; }
+        .ti-3 .task-checkbox { animation: check-mark 6s infinite 3s; }
+        @keyframes check-mark {
+            0%, 10% { border-color: #64748b; background: transparent; }
+            15%, 80% { border-color: #10b981; background: rgba(16,185,129,0.2); }
+            85%, 100% { border-color: #64748b; background: transparent; }
+        }
+        .ti-1 .task-checkbox::after { animation: show-check 6s infinite 0s; }
+        .ti-2 .task-checkbox::after { animation: show-check 6s infinite 1.5s; }
+        .ti-3 .task-checkbox::after { animation: show-check 6s infinite 3s; }
+        @keyframes show-check {
+            0%, 10% { opacity: 0; }
+            15%, 80% { opacity: 1; }
+            85%, 100% { opacity: 0; }
+        }
+
+        /* Visual 2: Real-Time Voice */
+        .voice-visualizer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 60px;
+        }
+        .v-bar {
+            width: 8px;
+            background: #10b981;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #10b981;
+            animation: eq-bounce 1s ease-in-out infinite alternate;
+        }
+        .v-bar:nth-child(1) { height: 20%; animation-delay: 0.1s; }
+        .v-bar:nth-child(2) { height: 50%; animation-delay: 0.3s; }
+        .v-bar:nth-child(3) { height: 80%; animation-delay: 0.0s; }
+        .v-bar:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+        .v-bar:nth-child(5) { height: 70%; animation-delay: 0.2s; }
+        .v-bar:nth-child(6) { height: 40%; animation-delay: 0.5s; }
+        .v-bar:nth-child(7) { height: 20%; animation-delay: 0.1s; }
+
+        @keyframes eq-bounce {
+            0% { transform: scaleY(0.3); background: #22d3ee; box-shadow: 0 0 10px #22d3ee; }
+            100% { transform: scaleY(1); background: #10b981; box-shadow: 0 0 15px #10b981; }
+        }
+
+        /* Visual 3: Implicit Personalization */
+        .brain-net {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+        .user-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: #0f172a;
+            border: 2px solid #10b981;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+        .data-particle {
+            position: absolute;
+            width: 6px; height: 6px;
+            background: #22d3ee;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #22d3ee;
+            z-index: 5;
+            opacity: 0;
+        }
+        .dp-1 { top: 10%; left: 20%; animation: absorb-data 3s infinite 0s; }
+        .dp-2 { top: 80%; left: 15%; animation: absorb-data 3s infinite 1s; background: #d946ef; }
+        .dp-3 { top: 30%; right: 10%; animation: absorb-data 3s infinite 2s; background: #facc15; }
+        .dp-4 { bottom: 10%; right: 20%; animation: absorb-data 3s infinite 0.5s; }
+
+        @keyframes absorb-data {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            80% { transform: translate(calc(50px - var(--tx)), calc(50px - var(--ty))) scale(0.5); opacity: 1; }
+            90%, 100% { transform: translate(calc(50px - var(--tx)), calc(50px - var(--ty))) scale(0); opacity: 0; }
+        }
+        .dp-1 { --tx: 10%; --ty: 20%; }
+        .dp-2 { --tx: 80%; --ty: 15%; }
+        .dp-3 { --tx: 30%; --ty: 90%; }
+        .dp-4 { --tx: 90%; --ty: 80%; }
+
+        /* Visual 4: Embedded AI */
+        .workspace {
+            position: relative;
+            width: 180px;
+            height: 120px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-icon {
+            width: 40px; height: 40px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+        .ai-sparkle {
+            position: absolute;
+            top: -5px; right: -5px;
+            width: 14px; height: 14px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 8px;
+            box-shadow: 0 0 10px #10b981;
+            animation: sparkle-pulse 2s infinite alternate;
+        }
+        .connect-line {
+            position: absolute;
+            top: 50%; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        @keyframes sparkle-pulse {
+            0% { transform: scale(0.8); box-shadow: 0 0 5px #10b981; }
+            100% { transform: scale(1.2); box-shadow: 0 0 15px #10b981; }
+        }
+
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen selection:bg-neon-emerald/30 pb-20">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8">
+        <a href="index.html" class="inline-flex items-center text-sm font-mono text-slate-400 hover:text-neon-emerald transition-colors">
+            &larr; BACK TO PYRAMID
+        </a>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="inline-block border border-neon-emerald/30 bg-neon-emerald/10 px-3 py-1 rounded-full text-neon-emerald text-xs font-mono font-bold mb-4">
+            LAYER 05 APPLICATIONS
+        </div>
+        <h1 class="text-4xl md:text-6xl font-800 text-white mb-6">
+            The <span class="text-neon-emerald text-glow">Application Frontier</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl text-lg leading-relaxed">
+            Where intelligence finally meets the end user. This layer obscures the immense complexity of the stack below it, delivering seamless, natural, and highly personalized interfaces that act as digital extensions of the human mind.
+        </p>
+    </header>
+
+    <!-- Feature Grid -->
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Feature 1: Task Autonomy -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-emerald/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="task-list">
+                    <div class="task-item ti-1">
+                        <div class="task-checkbox"></div>
+                        <span>1. Extract data</span>
+                    </div>
+                    <div class="task-item ti-2">
+                        <div class="task-checkbox"></div>
+                        <span>2. Analyze trends</span>
+                    </div>
+                    <div class="task-item ti-3">
+                        <div class="task-checkbox"></div>
+                        <span>3. Draft email</span>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">End-to-End Task Autonomy</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Chatbots are evolving into autonomous agents. Instead of answering questions, apps now take high-level objectives ("Research competitor pricing and build a deck") and independently break them down, execute API calls, and deliver finished work without human micro-management.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-emerald px-2 py-1 rounded">Shift: Chat → Action</span>
+        </article>
+
+        <!-- Feature 2: Emotional Voice -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-emerald/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="voice-visualizer">
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Real-Time Emotional Voice</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Latency has dropped below 300 milliseconds—the threshold of human conversation. Voice interfaces no longer use clunky text-to-speech translations; they generate audio natively, allowing them to detect sarcasm, adjust tone, laugh, and be interrupted naturally mid-sentence.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-emerald px-2 py-1 rounded">Latency: < 300ms</span>
+        </article>
+
+        <!-- Feature 3: Personalization -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-emerald/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="brain-net">
+                    <div class="user-core">👤</div>
+                    <div class="data-particle dp-1"></div>
+                    <div class="data-particle dp-2"></div>
+                    <div class="data-particle dp-3"></div>
+                    <div class="data-particle dp-4"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Implicit Personalization</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                You no longer need to configure settings. AI applications implicitly learn your preferences, writing style, and workflow just by observing how you edit their outputs. The model updates a localized memory graph, ensuring it gets continuously smarter and more tailored to you over time.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-emerald px-2 py-1 rounded">Data: Continuous User Memory</span>
+        </article>
+
+        <!-- Feature 4: Ecosystem Integration -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-emerald/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="workspace">
+                    <div class="connect-line"></div>
+                    <div class="app-icon">📝<div class="ai-sparkle">✦</div></div>
+                    <div class="app-icon">📊<div class="ai-sparkle">✦</div></div>
+                    <div class="app-icon">✉️<div class="ai-sparkle">✦</div></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Seamless Workspace Integration</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                AI is moving out of standalone chat windows and embedding itself natively inside the software we already use. Copilots reside directly within IDEs, word processors, and CRMs, operating with full contextual awareness of the document or codebase you are currently looking at.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-emerald px-2 py-1 rounded">UX Paradigm: "AI Everywhere"</span>
+        </article>
+
+    </main>
+</body>
+</html>

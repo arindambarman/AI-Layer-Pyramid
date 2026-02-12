@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Stack: Hierarchical Landscape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-cyan': '#22d3ee',
+                        'neon-magenta': '#d946ef',
+                        'neon-yellow': '#facc15',
+                        'neon-emerald': '#10b981',
+                        'neon-blue': '#3b82f6'
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            height: 380px;
+            max-height: 400px;
+        }
+        .layer-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .layer-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        .player-tag {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        .player-tag:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        .glow-cyan { box-shadow: 0 0 20px -5px rgba(34, 211, 238, 0.2); }
+        .glow-magenta { box-shadow: 0 0 20px -5px rgba(217, 70, 239, 0.2); }
+        .glow-yellow { box-shadow: 0 0 20px -5px rgba(250, 204, 21, 0.2); }
+        .glow-emerald { box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.2); }
+
+        .explore-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid;
+            letter-spacing: 0.05em;
+        }
+        .explore-link:hover {
+            transform: translateX(4px);
+            box-shadow: 0 0 20px -5px currentColor;
+        }
+        .explore-link .arrow {
+            transition: transform 0.3s ease;
+        }
+        .explore-link:hover .arrow {
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans selection:bg-neon-cyan/30">
+
+    <header class="pt-16 pb-12 px-6 max-w-7xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-800 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-magenta">
+            The Intelligence Pyramid
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+            From the silicon bedrock to agentic user interfaces. Mapping the five-layer hierarchy driving the AI industrial revolution. <span class="text-slate-500 text-sm block mt-2">Click <span class="text-white font-semibold">EXPLORE LAYER</span> on any card to dive deeper.</span>
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 flex flex-col-reverse gap-8 pb-20">
+
+        <!-- LAYER 1: HARDWARE (FOUNDATION) -->
+        <section class="layer-card bg-cyber-card p-8 rounded-3xl glow-yellow border-b-4 border-b-neon-yellow">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono font-bold bg-neon-yellow text-black px-2 py-0.5 rounded">LEVEL 01</span>
+                        <h2 class="text-3xl font-bold text-white">The Silicon Bedrock</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        The physical foundation of the AI era. These custom-built chips are optimized for tensor mathematics and parallel data movement at scale. NVIDIA remains the dominant architect, but Google's TPU is the custom engine powering the Gemini ecosystem.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div>
+                            <h4 class="text-neon-yellow text-[10px] font-mono font-bold uppercase mb-3 tracking-widest">Salient Features</h4>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• High Bandwidth Memory (HBM3e)</li>
+                                <li>• Liquid-Cooled Scalability</li>
+                                <li>• Tensor Core Parallelism</li>
+                                <li>• Chiplet-based Architectures</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-neon-yellow text-[10px] font-mono font-bold uppercase mb-3 tracking-widest">Industry Titans</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="player-tag">NVIDIA (B200)</span>
+                                <span class="player-tag">Google TPU (v6)</span>
+                                <span class="player-tag">AMD (MI350)</span>
+                                <span class="player-tag">Apple (M4 Ultra)</span>
+                                <span class="player-tag">Groq (LPU)</span>
+                                <span class="player-tag">Cerebras (WSE)</span>
+                                <span class="player-tag">Intel (Gaudi)</span>
+                                <span class="player-tag">TSMC (Fab)</span>
+                                <span class="player-tag">Tenstorrent</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="layer1-details.html" class="explore-link text-neon-yellow border-neon-yellow/40 bg-neon-yellow/5 hover:bg-neon-yellow/10">
+                        EXPLORE LAYER 01 <span class="arrow">&rarr;</span>
+                    </a>
+                </div>
+                <div>
+                    <h3 class="text-center text-xs font-mono text-slate-500 mb-4 uppercase">Compute Throughput by Year (Normalized)</h3>
+                    <div class="chart-container">
+                        <canvas id="hardwareTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYER 2: CLOUD & COMPUTE -->
+        <section class="layer-card bg-cyber-card p-8 rounded-3xl glow-blue border-b-4 border-b-neon-blue">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono font-bold bg-neon-blue text-white px-2 py-0.5 rounded">LEVEL 02</span>
+                        <h2 class="text-3xl font-bold text-white">Compute & Cloud</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm">Turning raw silicon into virtualized, on-demand compute clusters. Hyperscalers control the flow of FLOPs.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-blue text-[10px] font-bold uppercase mb-2">Salient Features</h4>
+                            <ul class="text-[11px] space-y-1 text-slate-300">
+                                <li>• Global Inference Points</li>
+                                <li>• InfiniBand Interconnects</li>
+                                <li>• Shared Virtualized VRAM</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-blue text-[10px] font-bold uppercase mb-2">Major Providers</h4>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="player-tag">Azure</span> <span class="player-tag">AWS</span>
+                                <span class="player-tag">GCP</span> <span class="player-tag">CoreWeave</span>
+                                <span class="player-tag">Lambda</span> <span class="player-tag">Oracle</span>
+                                <span class="player-tag">DigitalOcean</span> <span class="player-tag">Vultr</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="layer2-details.html" class="explore-link text-neon-blue border-neon-blue/40 bg-neon-blue/5 hover:bg-neon-blue/10">
+                        EXPLORE LAYER 02 <span class="arrow">&rarr;</span>
+                    </a>
+                </div>
+                <div class="flex items-center justify-center p-6 border border-slate-800 rounded-2xl bg-slate-950/40">
+                    <div class="text-center">
+                        <span class="text-4xl font-bold text-neon-blue">72%</span>
+                        <p class="text-xs text-slate-500 uppercase mt-2">Combined Hyperscaler <br> AI Workload Share</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYER 3: FOUNDATION MODELS -->
+        <section class="layer-card bg-cyber-card p-8 rounded-3xl glow-cyan border-b-4 border-b-neon-cyan">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono font-bold bg-neon-cyan text-black px-2 py-0.5 rounded">LEVEL 03</span>
+                        <h2 class="text-3xl font-bold text-white">Foundation Models</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm">The "Reasoning Engines." Generalist models trained on the sum of human digital output.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-cyan text-[10px] font-bold uppercase mb-2">Salient Features</h4>
+                            <ul class="text-[11px] space-y-1 text-slate-300">
+                                <li>• Long-Context (2M+ tokens)</li>
+                                <li>• Zero-shot Reasoning</li>
+                                <li>• Multi-modal Synthesis</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-cyan text-[10px] font-bold uppercase mb-2">Model Labs</h4>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="player-tag">OpenAI</span> <span class="player-tag">Anthropic</span>
+                                <span class="player-tag">Google DeepMind</span> <span class="player-tag">Meta</span>
+                                <span class="player-tag">Mistral</span> <span class="player-tag">xAI</span>
+                                <span class="player-tag">01.AI</span> <span class="player-tag">Cohere</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="layer3-details.html" class="explore-link text-neon-cyan border-neon-cyan/40 bg-neon-cyan/5 hover:bg-neon-cyan/10">
+                        EXPLORE LAYER 03 <span class="arrow">&rarr;</span>
+                    </a>
+                </div>
+                <div class="flex items-center justify-center space-x-8 text-center">
+                    <div><span class="block text-2xl font-bold text-white">400B+</span><span class="text-[10px] text-slate-500">Max Parameters</span></div>
+                    <div class="h-10 w-px bg-slate-800"></div>
+                    <div><span class="block text-2xl font-bold text-white">100+</span><span class="text-[10px] text-slate-500">Active Benchmarks</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYER 4: INFRA & TOOLING -->
+        <section class="layer-card bg-cyber-card p-8 rounded-3xl glow-magenta border-b-4 border-b-neon-magenta">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono font-bold bg-neon-magenta text-white px-2 py-0.5 rounded">LEVEL 04</span>
+                        <h2 class="text-3xl font-bold text-white">Infra & Orchestration</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm">Connecting static models to live user data and managing production reliability.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-magenta text-[10px] font-bold uppercase mb-2">Salient Features</h4>
+                            <ul class="text-[11px] space-y-1 text-slate-300">
+                                <li>• RAG Pipelines</li>
+                                <li>• Vector Similarity Search</li>
+                                <li>• Model Guardrails</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/40 p-4 rounded-xl">
+                            <h4 class="text-neon-magenta text-[10px] font-bold uppercase mb-2">Enabling Tools</h4>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="player-tag">LangChain</span> <span class="player-tag">Pinecone</span>
+                                <span class="player-tag">Hugging Face</span> <span class="player-tag">LlamaIndex</span>
+                                <span class="player-tag">Scale AI</span> <span class="player-tag">W&B</span>
+                                <span class="player-tag">Arize</span> <span class="player-tag">OctoAI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="layer4-details.html" class="explore-link text-neon-magenta border-neon-magenta/40 bg-neon-magenta/5 hover:bg-neon-magenta/10">
+                        EXPLORE LAYER 04 <span class="arrow">&rarr;</span>
+                    </a>
+                </div>
+                <div class="flex flex-col justify-center gap-2">
+                    <div class="bg-magenta-900/10 border border-neon-magenta/20 p-3 rounded-lg text-xs italic text-slate-400">
+                        "The layer that turns a demo into a product."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYER 5: APPLICATIONS (TOP) -->
+        <section class="layer-card bg-cyber-card p-8 rounded-3xl glow-emerald border-b-4 border-b-neon-emerald">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono font-bold bg-neon-emerald text-black px-2 py-0.5 rounded">LEVEL 05</span>
+                        <h2 class="text-3xl font-bold text-white">Application Frontier</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Where intelligence meets the user. This layer is focused on product-market fit, UI/UX, and becoming an indispensable part of daily workflows. The growth here is exponential as barriers to entry for AI-first apps collapse.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="text-neon-emerald text-[10px] font-mono font-bold uppercase mb-3 tracking-widest">Salient Features</h4>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• Multi-turn Agentic UI</li>
+                                <li>• Ecosystem Lock-in</li>
+                                <li>• Specialized Task Reasoning</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-neon-emerald text-[10px] font-mono font-bold uppercase mb-3 tracking-widest">Global Leaders</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="player-tag">ChatGPT</span> <span class="player-tag">Gemini</span>
+                                <span class="player-tag">Claude</span> <span class="player-tag">Perplexity</span>
+                                <span class="player-tag">GitHub Copilot</span> <span class="player-tag">Midjourney</span>
+                                <span class="player-tag">Jasper</span> <span class="player-tag">Notion AI</span>
+                                <span class="player-tag">Adobe Firefly</span> <span class="player-tag">Character.ai</span>
+                                <span class="player-tag">Canva Magic</span> <span class="player-tag">Harvey</span>
+                                <span class="player-tag">Glean</span> <span class="player-tag">Pi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="layer5-details.html" class="explore-link text-neon-emerald border-neon-emerald/40 bg-neon-emerald/5 hover:bg-neon-emerald/10">
+                        EXPLORE LAYER 05 <span class="arrow">&rarr;</span>
+                    </a>
+                </div>
+                <div>
+                    <h3 class="text-center text-xs font-mono text-slate-500 mb-4 uppercase">User Growth Rate (%) Over Time</h3>
+                    <div class="chart-container">
+                        <canvas id="appGrowthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 border-t border-white/5 text-center text-slate-600 text-[10px] font-mono tracking-widest uppercase">
+        <p>NO MERMAID JS • NO SVG • RENDERED VIA CANVAS & TAILWIND</p>
+        <p class="mt-2 text-slate-800">State of the AI Union • v3.1.0 • 2026</p>
+    </footer>
+
+    <script>
+        function formatLabels(labels) {
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > 16) {
+                    const words = label.split(' ');
+                    let lines = [];
+                    let current = "";
+                    words.forEach(word => {
+                        if ((current + word).length > 16) {
+                            lines.push(current.trim());
+                            current = word + " ";
+                        } else {
+                            current += word + " ";
+                        }
+                    });
+                    lines.push(current.trim());
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        const tooltipPlugin = {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        return Array.isArray(label) ? label.join(' ') : label;
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.font.family = 'JetBrains Mono';
+
+        const ctxHw = document.getElementById('hardwareTrendChart').getContext('2d');
+        new Chart(ctxHw, {
+            type: 'line',
+            data: {
+                labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'Compute Throughput Index',
+                    data: [1, 2, 8, 15, 45, 100, 240, 580, 1100],
+                    borderColor: '#facc15',
+                    backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#facc15'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: tooltipPlugin,
+                scales: {
+                    y: { 
+                        type: 'logarithmic',
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#475569' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        const ctxApp = document.getElementById('appGrowthChart').getContext('2d');
+        new Chart(ctxApp, {
+            type: 'line',
+            data: {
+                labels: ['M1', 'M4', 'M8', 'M12', 'M16', 'M20', 'M24'],
+                datasets: [
+                    {
+                        label: 'ChatGPT (%)',
+                        data: [0, 80, 150, 220, 280, 310, 340],
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Gemini (%)',
+                        data: [0, 40, 110, 180, 240, 290, 330],
+                        borderColor: '#22d3ee',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Claude (%)',
+                        data: [0, 15, 45, 80, 130, 190, 250],
+                        borderColor: '#d946ef',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: tooltipPlugin,
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        title: { display: true, text: '% Growth Rate', color: '#475569', font: { size: 10 } }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

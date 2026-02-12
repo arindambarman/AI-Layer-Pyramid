@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 4: Infra & Orchestration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-magenta': '#d946ef',
+                        'neon-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow-magenta { box-shadow: 0 0 20px -5px rgba(217, 70, 239, 0.4); }
+        .text-glow { text-shadow: 0 0 10px rgba(217, 70, 239, 0.6); }
+        
+        /* Visual 1: Vector Space Search */
+        .vector-space {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border: 1px dashed #475569;
+            border-radius: 12px;
+            background: radial-gradient(circle at center, rgba(217, 70, 239, 0.05) 0%, transparent 70%);
+        }
+        .v-dot {
+            position: absolute;
+            width: 6px; height: 6px;
+            background: #334155;
+            border-radius: 50%;
+        }
+        .v-target {
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d946ef;
+            width: 10px; height: 10px;
+            box-shadow: 0 0 15px #d946ef;
+            z-index: 10;
+            animation: pulse-target 2s infinite alternate;
+        }
+        .v-neighbor { background: #f472b6; box-shadow: 0 0 5px #f472b6; z-index: 5; }
+        .v-line {
+            position: absolute;
+            background: rgba(217, 70, 239, 0.4);
+            height: 1px;
+            transform-origin: left center;
+            top: 50%; left: 50%;
+            z-index: 1;
+            animation: draw-line 2s infinite alternate;
+        }
+        @keyframes pulse-target {
+            0% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 5px #d946ef; }
+            100% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 20px #d946ef; }
+        }
+        @keyframes draw-line {
+            0%, 20% { width: 0; opacity: 0; }
+            80%, 100% { width: var(--len); opacity: 1; }
+        }
+
+        /* Visual 2: RAG Pipeline */
+        .rag-pipeline {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+        .rag-box {
+            border: 2px solid #475569;
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #94a3b8;
+            position: relative;
+            z-index: 2;
+        }
+        .rag-db { border-color: #d946ef; color: #d946ef; box-shadow: 0 0 10px rgba(217,70,239,0.2); }
+        .rag-prompt { transition: all 0.5s; }
+        .rag-model { border-color: #22d3ee; color: #22d3ee; }
+        
+        .rag-flow {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d946ef, transparent);
+            background-size: 200% 100%;
+            z-index: 1;
+        }
+        .flow-1 { width: 30px; left: 45px; top: 50%; animation: flow-anim 2s linear infinite; }
+        .flow-2 { width: 30px; left: 145px; top: 50%; animation: flow-anim 2s linear infinite 1s; background: linear-gradient(90deg, transparent, #22d3ee, transparent); }
+        
+        .rag-prompt.augmented {
+            animation: augment-pulse 2s infinite;
+        }
+        
+        @keyframes flow-anim {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+        @keyframes augment-pulse {
+            0%, 40% { border-color: #475569; box-shadow: none; color: #94a3b8; }
+            50%, 90% { border-color: #d946ef; box-shadow: 0 0 15px rgba(217,70,239,0.3); color: #fff; }
+            100% { border-color: #475569; box-shadow: none; color: #94a3b8; }
+        }
+
+        /* Visual 3: Agent Tool Routing */
+        .router-hub {
+            position: relative;
+            width: 160px;
+            height: 120px;
+        }
+        .agent-core {
+            position: absolute;
+            top: 50%; left: 20%;
+            transform: translate(-50%, -50%);
+            width: 36px; height: 36px;
+            background: #0f172a;
+            border: 2px solid #d946ef;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10;
+        }
+        .tool-node {
+            position: absolute;
+            width: 28px; height: 28px;
+            background: #1e293b;
+            border: 1px solid #64748b;
+            border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 10px;
+        }
+        .tn-web { top: 10%; right: 10%; }
+        .tn-db { top: 50%; right: 10%; transform: translateY(-50%); }
+        .tn-calc { bottom: 10%; right: 10%; }
+        
+        .routing-packet {
+            position: absolute;
+            width: 8px; height: 8px;
+            background: #d946ef;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #d946ef;
+            z-index: 5;
+            opacity: 0;
+            top: 50%; left: 20%;
+        }
+        
+        /* Route to calc and back */
+        .packet-1 { animation: route-1 4s infinite cubic-bezier(0.4, 0, 0.2, 1); }
+        .packet-2 { animation: route-2 4s infinite cubic-bezier(0.4, 0, 0.2, 1) 2s; }
+
+        @keyframes route-1 {
+            0%, 10% { opacity: 0; top: 50%; left: 20%; }
+            15% { opacity: 1; }
+            40% { top: 80%; left: 80%; }
+            50% { top: 80%; left: 80%; opacity: 0; }
+            60% { top: 80%; left: 80%; opacity: 1; background: #22d3ee; box-shadow: 0 0 8px #22d3ee;}
+            85% { top: 50%; left: 20%; }
+            90%, 100% { opacity: 0; top: 50%; left: 20%; }
+        }
+        @keyframes route-2 {
+            0%, 10% { opacity: 0; top: 50%; left: 20%; }
+            15% { opacity: 1; }
+            40% { top: 20%; left: 80%; }
+            50% { top: 20%; left: 80%; opacity: 0; }
+            60% { top: 20%; left: 80%; opacity: 1; background: #22d3ee; box-shadow: 0 0 8px #22d3ee;}
+            85% { top: 50%; left: 20%; }
+            90%, 100% { opacity: 0; top: 50%; left: 20%; }
+        }
+
+        /* Visual 4: Semantic Caching */
+        .cache-system {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            width: 180px;
+        }
+        .cache-layer {
+            height: 30px;
+            border: 2px dashed #d946ef;
+            background: rgba(217, 70, 239, 0.05);
+            border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 10px; font-family: monospace; color: #d946ef;
+            position: relative;
+        }
+        .llm-layer {
+            height: 30px;
+            border: 2px solid #475569;
+            background: #0f172a;
+            border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 10px; font-family: monospace; color: #94a3b8;
+        }
+        .query-packet {
+            position: absolute;
+            left: 50%; transform: translateX(-50%);
+            width: 12px; height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        .qp-miss { animation: cache-miss 4s infinite; top: -20px; }
+        .qp-hit { animation: cache-hit 4s infinite 2s; top: -20px; background: #22d3ee; opacity: 0; }
+
+        .cache-layer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(217, 70, 239, 0.3);
+            border-radius: 4px;
+            opacity: 0;
+            animation: cache-flash 4s infinite 2s;
+        }
+
+        @keyframes cache-miss {
+            0% { top: -20px; opacity: 1; }
+            20% { top: 5px; } /* hits cache */
+            30% { top: 5px; } /* misses */
+            50% { top: 55px; background: #d946ef; } /* hits LLM */
+            70% { top: -20px; background: #d946ef; } /* returns */
+            80%, 100% { opacity: 0; top: -20px; }
+        }
+        
+        @keyframes cache-hit {
+            0% { top: -20px; opacity: 1; }
+            20% { top: 5px; } /* hits cache */
+            30% { top: 5px; background: #d946ef; } /* returns instantly */
+            50% { top: -20px; background: #d946ef; }
+            60%, 100% { opacity: 0; top: -20px; }
+        }
+        @keyframes cache-flash {
+            0%, 25% { opacity: 0; }
+            30%, 40% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen selection:bg-neon-magenta/30 pb-20">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8">
+        <a href="index.html" class="inline-flex items-center text-sm font-mono text-slate-400 hover:text-neon-magenta transition-colors">
+            &larr; BACK TO PYRAMID
+        </a>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="inline-block border border-neon-magenta/30 bg-neon-magenta/10 px-3 py-1 rounded-full text-neon-magenta text-xs font-mono font-bold mb-4">
+            LAYER 04 ORCHESTRATION
+        </div>
+        <h1 class="text-4xl md:text-6xl font-800 text-white mb-6">
+            The <span class="text-neon-magenta text-glow">Connective Tissue</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl text-lg leading-relaxed">
+            Models alone are just stateless prediction engines. Layer 4 provides the memory, routing, and guardrails necessary to turn isolated AI models into reliable, production-ready enterprise systems. This is where the framework wars are fought.
+        </p>
+    </header>
+
+    <!-- Feature Grid -->
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Feature 1: Vector Search -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-magenta/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="vector-space">
+                    <!-- Static noise dots -->
+                    <div class="v-dot" style="top: 20%; left: 30%;"></div>
+                    <div class="v-dot" style="top: 80%; left: 70%;"></div>
+                    <div class="v-dot" style="top: 15%; left: 80%;"></div>
+                    <div class="v-dot" style="top: 75%; left: 20%;"></div>
+                    
+                    <!-- Nearest neighbors -->
+                    <div class="v-dot v-neighbor" style="top: 35%; left: 60%;"></div>
+                    <div class="v-dot v-neighbor" style="top: 60%; left: 35%;"></div>
+                    <div class="v-dot v-neighbor" style="top: 65%; left: 65%;"></div>
+                    
+                    <!-- Lines (lengths calculated via CSS vars for animation) -->
+                    <div class="v-line" style="transform: rotate(-33deg); --len: 35px;"></div>
+                    <div class="v-line" style="transform: rotate(146deg); --len: 30px;"></div>
+                    <div class="v-line" style="transform: rotate(45deg); --len: 35px;"></div>
+                    
+                    <div class="v-target"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Vector Similarity Search</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Databases like Pinecone and Weaviate do not search by keywords. They convert text, images, and user intent into high-dimensional coordinate arrays (embeddings). When a query arrives, the database simply mathematically calculates the nearest geometric neighbors in milliseconds.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-magenta px-2 py-1 rounded">Tech: ANN Indexes (HNSW)</span>
+        </article>
+
+        <!-- Feature 2: RAG Pipeline -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-magenta/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="rag-pipeline">
+                    <div class="rag-box rag-db">Vector<br>DB</div>
+                    <div class="rag-flow flow-1"></div>
+                    <div class="rag-box rag-prompt augmented">Prompt<br>Context</div>
+                    <div class="rag-flow flow-2"></div>
+                    <div class="rag-box rag-model">LLM<br>API</div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Retrieval-Augmented Generation</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                The antidote to AI hallucinations. Instead of relying on an LLM's pre-trained memory, RAG intercepts the user query, searches a private database for factual internal documents, and staples those exact facts into the prompt before sending it to the model for an answer.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-magenta px-2 py-1 rounded">Goal: 0% Hallucination Rate</span>
+        </article>
+
+        <!-- Feature 3: Agent Routing -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-magenta/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="router-hub">
+                    <div class="agent-core"><span class="text-[8px] font-bold text-neon-magenta">AGENT</span></div>
+                    
+                    <div class="tool-node tn-web">🌐</div>
+                    <div class="tool-node tn-db">🗄️</div>
+                    <div class="tool-node tn-calc">🧮</div>
+                    
+                    <div class="routing-packet packet-1"></div>
+                    <div class="routing-packet packet-2"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Agentic Tool Routing</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Frameworks like LangChain empower models to become actors. If an LLM realizes it cannot answer a math equation, the orchestration layer routes the query to a secure Python calculator, retrieves the exact answer, and feeds it back to the model to continue its logic chain.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-magenta px-2 py-1 rounded">Tools: ReAct Prompting</span>
+        </article>
+
+        <!-- Feature 4: Semantic Caching -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-magenta/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="cache-system mt-8">
+                    <div class="query-packet qp-miss"></div>
+                    <div class="query-packet qp-hit"></div>
+                    
+                    <div class="cache-layer">Semantic Cache</div>
+                    <div class="llm-layer">Foundation Model</div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Semantic Caching & Guardrails</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Running massive models is expensive. Semantic caching intercepts questions that mean the same thing (e.g., "How do I reset my password?" vs "Forgot password help") and instantly returns a cached answer, saving API costs and dropping latency from seconds to milliseconds.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-magenta px-2 py-1 rounded">Impact: -80% API Costs</span>
+        </article>
+
+    </main>
+</body>
+</html>

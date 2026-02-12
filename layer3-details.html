@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 3: Foundation Models</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-cyan': '#22d3ee',
+                        'neon-magenta': '#d946ef',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow-cyan { box-shadow: 0 0 20px -5px rgba(34, 211, 238, 0.4); }
+        .text-glow { text-shadow: 0 0 10px rgba(34, 211, 238, 0.6); }
+        
+        /* Visual 1: Attention Mechanism */
+        .attention-container {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .token {
+            width: 24px;
+            height: 24px;
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 4px;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .token.active {
+            border-color: #22d3ee;
+            background: rgba(34, 211, 238, 0.2);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+        }
+        .attention-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+            top: 50%;
+            z-index: 1;
+            opacity: 0;
+            transform-origin: left center;
+        }
+        /* hardcoded lines for visual effect */
+        .al-1 { left: 15%; width: 25%; animation: flash-line 3s infinite 0.5s; transform: rotate(15deg); }
+        .al-2 { left: 40%; width: 45%; animation: flash-line 3s infinite 1s; transform: rotate(-10deg); }
+        .al-3 { left: 15%; width: 70%; animation: flash-line 3s infinite 1.5s; transform: rotate(5deg); }
+        
+        @keyframes flash-line {
+            0%, 100% { opacity: 0; }
+            10%, 50% { opacity: 1; }
+        }
+
+        /* Visual 2: Multi-Modal Synthesis */
+        .modal-hub {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+        .core-model {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: #22d3ee;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #22d3ee;
+            animation: pulse-core 2s infinite alternate;
+        }
+        .data-input {
+            position: absolute;
+            width: 24px; height: 24px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .di-text { top: 0; left: 50%; transform: translateX(-50%); animation: feed-in 2s infinite; }
+        .di-audio { bottom: 20%; left: 0; animation: feed-in 2s infinite 0.6s; }
+        .di-vision { bottom: 20%; right: 0; animation: feed-in 2s infinite 1.2s; }
+        
+        @keyframes feed-in {
+            0% { opacity: 0; transform: scale(0.5) translate(0, 0); }
+            50% { opacity: 1; transform: scale(1) translate(0, 0); border-color: #22d3ee; }
+            100% { opacity: 0; transform: scale(0.5) translate(var(--tx, 0), var(--ty, 0)); }
+        }
+        .di-text { --tx: 0; --ty: 40px; }
+        .di-audio { --tx: 40px; --ty: -15px; }
+        .di-vision { --tx: -40px; --ty: -15px; }
+        @keyframes pulse-core {
+            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px #22d3ee; }
+            100% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 30px #22d3ee, 0 0 10px #fff; }
+        }
+
+        /* Visual 3: Infinite Context Scroll */
+        .context-window {
+            width: 180px;
+            height: 100px;
+            background: #020617;
+            border: 2px solid #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            padding: 10px;
+        }
+        .doc-lines {
+            position: absolute;
+            width: calc(100% - 20px);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            animation: scroll-doc 3s linear infinite;
+        }
+        .d-line { height: 4px; background: #334155; border-radius: 2px; }
+        .d-line.highlight { background: #22d3ee; box-shadow: 0 0 5px #22d3ee; }
+        .scanner {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 20px;
+            background: linear-gradient(180deg, rgba(34,211,238,0), rgba(34,211,238,0.2), rgba(34,211,238,0));
+            border-bottom: 1px solid #22d3ee;
+            animation: scan-down 2s ease-in-out infinite alternate;
+        }
+        @keyframes scroll-doc {
+            0% { top: 100%; }
+            100% { top: -150%; }
+        }
+        @keyframes scan-down {
+            0% { top: 0; }
+            100% { top: 80px; }
+        }
+
+        /* Visual 4: System 2 Reasoning Sandbox */
+        .sandbox-env {
+            width: 200px;
+            height: 100px;
+            background: #020617;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            position: relative;
+        }
+        .code-type::before {
+            content: "> thinking...";
+            color: #64748b;
+            animation: think-type 4s infinite;
+        }
+        .code-result {
+            position: absolute;
+            bottom: 10px; left: 10px;
+            color: #10b981;
+            opacity: 0;
+            animation: show-result 4s infinite;
+        }
+        @keyframes think-type {
+            0%, 10% { content: "> "; }
+            20% { content: "> checking logic."; }
+            30% { content: "> checking logic.."; }
+            40%, 60% { content: "> checking logic..."; color: #22d3ee; }
+            70%, 100% { content: "> execution complete."; color: #64748b; }
+        }
+        @keyframes show-result {
+            0%, 65% { opacity: 0; transform: translateY(5px); }
+            75%, 100% { opacity: 1; transform: translateY(0); text-shadow: 0 0 5px #10b981; }
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen selection:bg-neon-cyan/30 pb-20">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8">
+        <a href="index.html" class="inline-flex items-center text-sm font-mono text-slate-400 hover:text-neon-cyan transition-colors">
+            &larr; BACK TO PYRAMID
+        </a>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="inline-block border border-neon-cyan/30 bg-neon-cyan/10 px-3 py-1 rounded-full text-neon-cyan text-xs font-mono font-bold mb-4">
+            LAYER 03 INTELLIGENCE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-800 text-white mb-6">
+            The <span class="text-neon-cyan text-glow">Reasoning Engines</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl text-lg leading-relaxed">
+            This layer represents the algorithmic brain. Built primarily on the Transformer architecture, these massive neural networks synthesize human knowledge, transitioning from simple pattern matchers to systems capable of multi-step, multi-modal reasoning.
+        </p>
+    </header>
+
+    <!-- Feature Grid -->
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Feature 1: Attention Mechanism -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-cyan/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="attention-container w-full px-8">
+                    <div class="token active"></div>
+                    <div class="token"></div>
+                    <div class="token active" style="animation-delay: 0.5s"></div>
+                    <div class="token"></div>
+                    <div class="token active" style="animation-delay: 1s"></div>
+                    
+                    <div class="attention-line al-1"></div>
+                    <div class="attention-line al-2"></div>
+                    <div class="attention-line al-3"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Self-Attention Architecture</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                The core innovation of the Transformer. Instead of reading data sequentially, the model looks at every word (token) in a sequence simultaneously, calculating mathematical "attention" scores to understand deep contextual relationships across vast distances in text.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-cyan px-2 py-1 rounded">Mechanism: Sparse & Dense Attention</span>
+        </article>
+
+        <!-- Feature 2: Native Multi-Modality -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-cyan/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="modal-hub">
+                    <div class="data-input di-text"><span class="text-[8px] font-mono text-slate-400">TXT</span></div>
+                    <div class="data-input di-audio"><span class="text-[8px] font-mono text-slate-400">WAV</span></div>
+                    <div class="data-input di-vision"><span class="text-[8px] font-mono text-slate-400">IMG</span></div>
+                    <div class="core-model"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Native Any-to-Any Modality</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Early AI required separate models for images, text, and audio. Modern foundation models (like Gemini 1.5) are built natively multi-modal from the ground up. They process audio waveforms, pixel matrices, and text tokens in a unified latent space, allowing for seamless cross-media reasoning.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-cyan px-2 py-1 rounded">Capability: Audio & Vision Integration</span>
+        </article>
+
+        <!-- Feature 3: Infinite Context -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-cyan/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="context-window">
+                    <div class="doc-lines">
+                        <div class="d-line w-3/4"></div><div class="d-line w-full"></div><div class="d-line w-5/6"></div>
+                        <div class="d-line w-1/2 highlight"></div><div class="d-line w-full"></div>
+                        <div class="d-line w-4/5"></div><div class="d-line w-3/4"></div><div class="d-line w-full highlight"></div>
+                        <div class="d-line w-1/3"></div><div class="d-line w-5/6"></div>
+                        <div class="d-line w-3/4"></div><div class="d-line w-full"></div><div class="d-line w-5/6"></div>
+                        <div class="d-line w-1/2"></div><div class="d-line w-full"></div>
+                    </div>
+                    <div class="scanner"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Massive Context Windows</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Memory limits have evaporated. Using techniques like Ring Attention, models can now ingest millions of tokens in a single prompt. This allows users to drop entire codebases, hour-long videos, or hundreds of financial reports into the model's working memory simultaneously.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-cyan px-2 py-1 rounded">Scale: 2M+ Token Windows</span>
+        </article>
+
+        <!-- Feature 4: System 2 Reasoning -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-cyan/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="sandbox-env">
+                    <div class="code-type"></div>
+                    <div class="code-result">✓ RETURN: True</div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">System-2 Reasoning Sandboxes</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Moving beyond fast, intuitive "System 1" guessing. Foundation models now employ "System 2" thinking: they pause to generate chain-of-thought logic, write and execute Python code in secure sandboxes to verify math, and self-correct their own logic trees before returning an answer.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-cyan px-2 py-1 rounded">Paradigm: Inference-Time Compute</span>
+        </article>
+
+    </main>
+</body>
+</html>

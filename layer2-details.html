@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 2: Compute & Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-bg': '#020617',
+                        'cyber-card': '#0f172a',
+                        'neon-blue': '#3b82f6',
+                        'neon-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow-blue { box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.4); }
+        .text-glow { text-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
+        
+        /* Visual 1: Virtualization */
+        .vm-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            perspective: 800px;
+        }
+        .vm-base {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            height: 40px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            transform: rotateX(45deg);
+        }
+        .vm-slice {
+            position: absolute;
+            width: 90%;
+            left: 5%;
+            height: 20px;
+            background: rgba(34, 211, 238, 0.2);
+            border: 1px solid #22d3ee;
+            border-radius: 4px;
+            animation: float-slice 3s infinite alternate ease-in-out;
+            transform-origin: bottom;
+        }
+        .vm-slice:nth-child(2) { bottom: 40px; animation-delay: 0s; }
+        .vm-slice:nth-child(3) { bottom: 65px; animation-delay: 0.5s; }
+        .vm-slice:nth-child(4) { bottom: 90px; animation-delay: 1s; }
+        @keyframes float-slice {
+            0% { transform: translateY(0) rotateX(45deg); opacity: 0.7; }
+            100% { transform: translateY(-15px) rotateX(45deg); opacity: 1; box-shadow: 0 5px 15px rgba(34, 211, 238, 0.3); }
+        }
+
+        /* Visual 2: InfiniBand Network */
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            position: relative;
+        }
+        .net-node {
+            width: 16px;
+            height: 16px;
+            background: #1e293b;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            z-index: 2;
+            animation: pulse-node 2s infinite;
+        }
+        .net-node:nth-child(even) { animation-delay: 1s; }
+        .net-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            background-size: 200% 100%;
+            height: 2px;
+            z-index: 1;
+            animation: data-flow 1.5s linear infinite;
+        }
+        .line-h1 { top: 7px; left: 16px; width: calc(100% - 32px); }
+        .line-h2 { bottom: 7px; left: 16px; width: calc(100% - 32px); animation-direction: reverse; }
+        .line-v1 { top: 16px; left: 7px; height: calc(100% - 32px); width: 2px; background: linear-gradient(180deg, transparent, #3b82f6, transparent); background-size: 100% 200%; }
+        .line-v2 { top: 16px; right: 7px; height: calc(100% - 32px); width: 2px; background: linear-gradient(180deg, transparent, #3b82f6, transparent); background-size: 100% 200%; }
+        
+        @keyframes pulse-node {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 15px 5px rgba(59, 130, 246, 0.6); background: #3b82f6; }
+        }
+        @keyframes data-flow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Visual 3: Dynamic Workload Migration */
+        .cluster-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 20px;
+            position: relative;
+        }
+        .server-rack {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #475569;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 4px;
+            background: #0f172a;
+        }
+        .rack-slot { flex: 1; background: #1e293b; border-radius: 2px; }
+        .workload-packet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #22d3ee;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #22d3ee;
+            top: 25px;
+            animation: migrate-workload 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes migrate-workload {
+            0%, 10% { left: 35px; transform: scale(1); opacity: 1; }
+            45%, 55% { left: calc(50% - 10px); transform: scale(1.5); opacity: 0.5; background: #3b82f6; }
+            90%, 100% { left: calc(100% - 55px); transform: scale(1); opacity: 1; }
+        }
+
+        /* Visual 4: Datacenter Cooling */
+        .cooling-system {
+            position: relative;
+            width: 140px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heat-source {
+            width: 60px;
+            height: 60px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            animation: heat-pulse 2s infinite alternate;
+        }
+        .coolant-pipe {
+            position: absolute;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #0f172a, #3b82f6, #22d3ee, #0f172a);
+            background-size: 200% 100%;
+            animation: liquid-flow 1.5s linear infinite;
+        }
+        .pipe-in { width: 80px; height: 10px; left: -20px; top: 30px; }
+        .pipe-out { width: 80px; height: 10px; right: -20px; bottom: 30px; background: linear-gradient(90deg, #0f172a, #ef4444, #f59e0b, #0f172a); animation-direction: reverse; }
+        
+        @keyframes heat-pulse {
+            0% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+            100% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.6); border-color: #f87171; }
+        }
+        @keyframes liquid-flow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen selection:bg-neon-blue/30 pb-20">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 py-8">
+        <a href="index.html" class="inline-flex items-center text-sm font-mono text-slate-400 hover:text-neon-blue transition-colors">
+            &larr; BACK TO PYRAMID
+        </a>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="inline-block border border-neon-blue/30 bg-neon-blue/10 px-3 py-1 rounded-full text-neon-blue text-xs font-mono font-bold mb-4">
+            LAYER 02 INFRASTRUCTURE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-800 text-white mb-6">
+            The Virtualized <span class="text-neon-blue text-glow">Datacenter</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl text-lg leading-relaxed">
+            Raw silicon is useless without orchestration. Layer 2 transforms hundreds of thousands of individual GPUs into a single, cohesive supercomputer. This is the domain of hyperscalers, defined by infinite bandwidth and dynamic resource allocation.
+        </p>
+    </header>
+
+    <!-- Feature Grid -->
+    <main class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Feature 1: GPU Virtualization -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-blue/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="vm-container mt-8">
+                    <div class="vm-base"></div>
+                    <div class="vm-slice"></div>
+                    <div class="vm-slice"></div>
+                    <div class="vm-slice"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Multi-tenant GPU Virtualization</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Cloud providers use technologies like Multi-Instance GPU (MIG) to securely partition a single physical GPU into multiple isolated instances. This allows multiple distinct workloads to run in parallel on the same silicon without memory interference, maximizing utilization and driving down inference costs.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-blue px-2 py-1 rounded">Efficiency: 100% hardware utilization</span>
+        </article>
+
+        <!-- Feature 2: InfiniBand -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-blue/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="w-32 h-32 network-grid">
+                    <div class="net-node"></div><div class="net-node"></div><div class="net-node"></div>
+                    <div class="net-node"></div><div class="net-node text-xs flex justify-center items-center text-neon-blue font-bold">+</div><div class="net-node"></div>
+                    <div class="net-node"></div><div class="net-node"></div><div class="net-node"></div>
+                    <div class="net-line line-h1"></div>
+                    <div class="net-line line-h2"></div>
+                    <div class="net-line line-v1"></div>
+                    <div class="net-line line-v2"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Petabit Optical Topologies</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Training a trillion-parameter model requires shuffling petabytes of data across thousands of servers. Cloud providers utilize non-blocking, fat-tree InfiniBand networks with optical transceivers to ensure microsecond latency between any two nodes in a massive cluster.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-blue px-2 py-1 rounded">Throughput: 800 Gbps per link</span>
+        </article>
+
+        <!-- Feature 3: Workload Migration -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-blue/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="cluster-area w-64">
+                    <div class="server-rack"><div class="rack-slot"></div><div class="rack-slot"></div><div class="rack-slot"></div></div>
+                    <div class="server-rack"><div class="rack-slot bg-neon-blue/20"></div><div class="rack-slot"></div><div class="rack-slot"></div></div>
+                    <div class="server-rack"><div class="rack-slot"></div><div class="rack-slot"></div><div class="rack-slot"></div></div>
+                    <div class="workload-packet"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Dynamic Workload Migration</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Datacenters are living organisms. If a server degrades or a node fails during a month-long training run, orchestration layers (like Kubernetes extended for AI) automatically snapshot the model state and seamlessly migrate the workload to healthy compute nodes without human intervention.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-blue px-2 py-1 rounded">Reliability: 99.99% Fault Tolerance</span>
+        </article>
+
+        <!-- Feature 4: Datacenter Cooling -->
+        <article class="bg-cyber-card border border-white/5 hover:border-neon-blue/30 p-8 rounded-3xl transition-all group">
+            <div class="h-48 flex items-center justify-center mb-6 bg-slate-900/50 rounded-2xl overflow-hidden relative">
+                <div class="cooling-system">
+                    <div class="coolant-pipe pipe-in"></div>
+                    <div class="heat-source flex items-center justify-center"><span class="text-[10px] font-mono font-bold text-red-400">GPU</span></div>
+                    <div class="coolant-pipe pipe-out"></div>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Direct-to-Chip Liquid Cooling</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                As rack power density pushes past 100kW, traditional air cooling physically fails. Layer 2 infrastructure now relies on closed-loop liquid cooling piped directly to cold plates mounted on the GPUs, capturing heat at the source and allowing for much denser, faster supercomputer designs.
+            </p>
+            <span class="text-xs font-mono bg-slate-800 text-neon-blue px-2 py-1 rounded">Density: 120kW per Rack</span>
+        </article>
+
+    </main>
+</body>
+</html>
